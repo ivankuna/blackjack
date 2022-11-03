@@ -61,7 +61,7 @@ while True:
         break
 
 if sum(player_hand[1]) < 21:
-    # petlja za dilera
+    petlja za dilera
     while True:
 
         print(dealer_hand[1])
