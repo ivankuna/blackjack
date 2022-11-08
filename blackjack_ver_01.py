@@ -46,8 +46,6 @@ if sum(player_hand[1]) == 21:
     print("\nBlackjack!")
 elif sum(dealer_hand[1]) == 21:
     print("\nThe dealer has Blackjack! You lose!")
-elif:sum(player_hand[1]) == 21 and sum(dealer_hand[1]) == 21:
-    print(f"\nThe dealer pushed the player.")
 else:
     while True:
         print("\n1 - Hit"
