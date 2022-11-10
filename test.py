@@ -1,53 +1,56 @@
 import random
-
-cards = ([2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"],
-         [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11])
-
-player_hand = [], []
-dealer_hand = [], []
+from time import sleep
 
 
-def deal():
-    dealer_hand[0].extend([random.choice(cards[0]), random.choice(cards[0])])
-    player_hand[0].extend([random.choice(cards[0]), random.choice(cards[0])])
+class Cards:
+    def __init__(self, who):
+        self.who = who
+        self.hand = [], []
 
-    for i in range(0, len(player_hand[0])):
-        counter = int(cards[0].index(player_hand[0][i]))
-        player_hand[1].append(cards[1][counter])
+    # cards = (["6", "7", "8", "A"],
+    #          [6, 7, 8, 11])
 
-    for i in range(0, len(dealer_hand[0])):
-        counter = int(cards[0].index(dealer_hand[0][i]))
-        dealer_hand[1].append(cards[1][counter])
+    cards = ([4, 5, 6, 7, 8, 9, 10, "J", "A", "A", "A"],
+             [4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 11])
 
+    def deal(self):
+        self.hand[1].clear()
+        self.hand[0].append(random.choice(self.cards[0]))
 
-def print_cards():
-    print("\nDealers hand:\n" + ", ".join(str(e) for e in dealer_hand[0]) + f" ({sum(dealer_hand[1])})")
-    print("\nPlayers hand:\n" + ", ".join(str(e) for e in player_hand[0]) + f" ({sum(player_hand[1])})")
+        for i in range(0, len(self.hand[0])):
+            counter = int(self.cards[0].index(self.hand[0][i]))
+            self.hand[1].append(self.cards[1][counter])
 
+        if "A" in self.hand[0] and sum(self.hand[1]) > 21:
+            while sum(self.hand[1]) > 21 and 11 in self.hand[1]:
+                self.hand[1].remove(11)
+                self.hand[1].insert(0, 1)
 
-def player_hand_value():
-    player_hand[1].clear()
-    for i in range(0, len(player_hand[0])):
-        counter = int(cards[0].index(player_hand[0][i]))
-        player_hand[1].append(cards[1][counter])
-
-
-def dealer_hand_value():
-    dealer_hand[1].clear()
-    for i in range(0, len(dealer_hand[0])):
-        counter = int(cards[0].index(dealer_hand[0][i]))
-        dealer_hand[1].append(cards[1][counter])
+        if self.who == "Player":
+            print("\n" + self.who + "s hand:\n" + ", ".join(str(e) for e in self.hand[0]) + f" ({sum(self.hand[1])})")
+        else:
+            print("\n" + self.who + "s hand:\n" + "X, " + str(self.hand[0][0]))
+            print(self.hand[0])
 
 
-deal()
-print_cards()
+player = Cards("Player")
+dealer = Cards("Dealer")
 
-if sum(player_hand[1]) == 21:
+for i in range(2):
+    player.deal()
+    sleep(0.5)
+    dealer.deal()
+    sleep(0.5)
+
+if sum(player.hand[1]) == 21 and sum(dealer.hand[1]) == 21:
+    sleep(1)
+    print("\nBoth the dealer and the player have Blackjack! Player is pushed!")
+elif sum(player.hand[1]) == 21:
+    sleep(1)
     print("\nBlackjack!")
-elif sum(dealer_hand[1]) == 21:
+elif sum(dealer.hand[1]) == 21:
+    sleep(1)
     print("\nThe dealer has Blackjack! You lose!")
-elif:sum(player_hand[1]) == 21 and sum(dealer_hand[1]) == 21:
-    print(f"\nThe dealer pushed the player.")
 else:
     while True:
         print("\n1 - Hit"
@@ -56,35 +59,41 @@ else:
         play = input("> ")
 
         if play == "1":
-            player_hand[0].append(random.choice(cards[0]))
-            player_hand_value()
-            print_cards()
-            if sum(player_hand[1]) == 21:
+            sleep(1)
+            player.deal()
+            if sum(player.hand[1]) == 21:
+                sleep(1)
                 print("Blackjack!")
                 break
-            elif sum(player_hand[1]) > 21:
+            elif sum(player.hand[1]) > 21:
+                sleep(1)
                 print("Bust!\n")
                 break
         elif play == "2":
-            print(f"\nStand. Your hands total is: {sum(player_hand[1])}\n")
+            sleep(1)
+            print(f"\nStand. Your hands total is: {sum(player.hand[1])}\n")
             break
 
-    if sum(player_hand[1]) < 21:
+    if sum(player.hand[1]) < 21:
         while True:
-            if sum(dealer_hand[1]) < 17:
-                dealer_hand[0].append(random.choice(cards[0]))
-                dealer_hand_value()
-                print("\nDealers hand:\n" + ", ".join(str(e) for e in dealer_hand[0]) + f" ({sum(dealer_hand[1])})")
-            elif 17 <= sum(dealer_hand[1]) <= 21:
-                if sum(dealer_hand[1]) < sum(player_hand[1]):
-                    print(f"\nThe dealer had {sum(dealer_hand[1])}. You win!")
+            if sum(dealer.hand[1]) < 17:
+                sleep(1)
+                dealer.deal()
+            elif 17 <= sum(dealer.hand[1]) <= 21:
+                if sum(dealer.hand[1]) < sum(player.hand[1]):
+                    sleep(1)
+                    print(f"\nThe dealer had {sum(dealer.hand[1])}. You win!")
                     break
-                if sum(dealer_hand[1]) >= sum(player_hand[1]):
-                    print(f"\nThe dealer had {sum(dealer_hand[1])}. You lose!")
+                if sum(dealer.hand[1]) >= sum(player.hand[1]):
+                    sleep(1)
+                    print(f"\nThe dealer had {sum(dealer.hand[1])}. You lose!")
                     break
-            if sum(dealer_hand[1]) > 21:
-                # print("\nDealers hand:\n" + ", ".join(str(e) for e in dealer_hand[0]))
+            if sum(dealer.hand[1]) > 21:
+                sleep(1)
                 print("\nThe dealer has bust. You win!")
                 break
+    elif sum(player.hand[1]) == 21:
+        print("")
     else:
-        print("\nend")
+        sleep(1)
+        print("\nBetter luck next time!")
