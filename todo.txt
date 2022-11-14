@@ -1,4 +1,13 @@
 kontrola karata:
-    -
+
+dictionary {
+        "1" : 1
+        "2" : 2
+        "3"
+        "q" : 10
+        "j" : 10
+        "k" : 10
+
+}
 
 
