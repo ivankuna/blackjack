@@ -16,6 +16,9 @@ class Cards:
 
     def deal(self, show_first_card):
         self.hand[1].clear()
+
+        # kontrola cetiri karte
+        # self.hand[0].append(random.choice(self.cards[0]))
         new_card = random.choice(self.cards[0])
         self.hand[0].append(new_card)
 
@@ -37,31 +40,29 @@ class Cards:
                 print("\n" + self.who + "s hand:\nX, " + ", ".join(str(e) for e in self.hand[0][1:]))
 
 
-# dokumentirati...
 class Betting:
     def __init__(self, balance):
         self.balance = balance
 
     def betting(self, bet):
-        self.balance -= int(bet)
-        self.print_balance()
+        if int(bet) > self.balance:
+            print("\nCan't bet higher than the balance!")
+        else:
+            self.balance -= int(bet)
+            print(f"\nPlayer balance is: {str(self.balance)}")
 
     def lose(self):
-        self.print_balance()
+        print(f"\nPlayer balance is: {str(self.balance)}")
 
     def push(self, bet):
-        self.balance += bet
-        self.print_balance()
+        self.balance += (bet)
+        print(f"\nPlayer balance is: {str(self.balance)}")
 
     def win(self, bet):
         self.balance += (bet * 2)
-        self.print_balance()
-
-    def print_balance(self):
         print(f"\nPlayer balance is: {str(self.balance)}")
 
 
-# petlja za upis uloga
 while True:
     try:
         balance = int(input("Buy in: "))
@@ -70,14 +71,11 @@ while True:
     except Exception as e:
         print(e)
 
-# glavna petlja ruke
-while True:
+while True:  # glavna petlja ruke
 
-    # ovo je petlja za upis beta manjeg ili jednakog balansu
-    while True:
+    while True: # ovo je petlja za upis beta manjeg ili jednakog balansu
 
-        # petlja za ispravan upis bet-a
-        while True:
+        while True: # petlja za ispravan upis bet-a
             try:
                 bet = int(input("\nTake a bet: "))
                 break
@@ -89,9 +87,10 @@ while True:
                 game.betting(bet)
                 break
             else:
-                print(f"\nCan't bet higher than balance!\nPlayer balance is: {game.balance}")
+                print(f"\nCan't bet higher than balance!\nPlayer balance is: {str(game.balance)}")
         else:
-            print("Bet must be larger than zero!")
+            print("Bet can't be a negative number!")
+
 
     # kreiraju se objekti player i dealer
     player = Cards("Player")
@@ -171,6 +170,10 @@ while True:
                     break
         elif sum(player.hand[1]) == 21:
             print("")
+        # else:
+        #     sleep(0.7)
+        #     print("\nBetter luck next time!")
+
 
     # ako je balans = nula
     if game.balance == 0:

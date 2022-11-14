@@ -1,37 +1,4 @@
-DONE - as je 1 ili 11
-DONE - skrivena prva karta dilera
-
-praćenje uloga
-    -input ukupna kolicina novaca
-    -input ulog
-    -pobjedom se ulog udvostrucuje
-    ->gubitkom se ulog gubi
-    ->pushom se ulog vraca
-    -ispisati ukupnu kolicinu novaca na pocetuku i kraju igre
-
-
-
-kada igra počne pitaš igrača koliko ima novaca
-
-stalno si u petelji dok igrač ima još novaca u balansu ili prekine igru
-
-klasu
-
-     konstruktor - balans
-     unosis pocetnu kolicinu
-
-     ispisuje ukupnu kolicinu
-
-     bet
-     na pocetku igre placas ruku
-
-
-
-
-
-
-
-- kontrola cetiri karte
-- dokumentacija koda
+kontrola karata:
+    -
 
 
