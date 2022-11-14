@@ -2,6 +2,10 @@ import random
 from time import sleep
 
 
+#
+# klasa Cards:
+# dijeli karte i ispisuje ih
+#
 class Cards:
     def __init__(self, who):
         self.who = who
@@ -10,9 +14,13 @@ class Cards:
     cards = ([2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"],
              [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11])
 
-    def deal(self):
+    def deal(self, show_first_card):
         self.hand[1].clear()
-        self.hand[0].append(random.choice(self.cards[0]))
+
+        # kontrola cetiri karte
+        # self.hand[0].append(random.choice(self.cards[0]))
+        new_card = random.choice(self.cards[0])
+        self.hand[0].append(new_card)
 
         for i in range(0, len(self.hand[0])):
             counter = int(self.cards[0].index(self.hand[0][i]))
@@ -23,18 +31,27 @@ class Cards:
                 self.hand[1].remove(11)
                 self.hand[1].insert(0, 1)
 
-        print("\n" + self.who + "s hand:\n" + ", ".join(str(e) for e in self.hand[0]) + f" ({sum(self.hand[1])})")
+        if show_first_card:
+            print("\n" + self.who + "s hand:\n" + ", ".join(str(e) for e in self.hand[0]) + f" ({sum(self.hand[1])})")
+        else:
+            if len(self.hand[0]) == 1:
+                print("\n" + self.who + "s hand:\n X")
+            else:
+                print("\n" + self.who + "s hand:\n X, " + ", ".join(str(e) for e in self.hand[0][1:]))
 
 
+# kreiraju se objekti player i dealer
 player = Cards("Player")
 dealer = Cards("Dealer")
 
+# dajem prve dvije karte
 for i in range(2):
-    player.deal()
+    player.deal(True)
     sleep(0.7)
-    dealer.deal()
+    dealer.deal(False)
     sleep(0.7)
 
+# provjerava se blackJack
 if sum(player.hand[1]) == 21 and sum(dealer.hand[1]) == 21:
     sleep(0.7)
     print("\nBoth the dealer and the player have Blackjack! Player is pushed!")
@@ -45,6 +62,7 @@ elif sum(dealer.hand[1]) == 21:
     sleep(0.7)
     print("\nThe dealer has Blackjack! You lose!")
 else:
+    # igra player
     while True:
         print("\n1 - Hit"
               "\n2 - Stand\n")
@@ -53,7 +71,7 @@ else:
 
         if play == "1":
             sleep(0.7)
-            player.deal()
+            player.deal(True)
             if sum(player.hand[1]) > 21:
                 sleep(0.7)
                 print("Bust!\n")
@@ -63,11 +81,16 @@ else:
             print(f"\nStand. Your hands total is: {sum(player.hand[1])}\n")
             break
 
+    # ispisuju prve dvije karte dealera
+    print("\n" + "Dealers hand:\n" + ", ".join(str(e) for e in dealer.hand[0]) + f" ({sum(dealer.hand[1])})")
+    # provjera se je li gotovo
+
     if sum(player.hand[1]) < 21:
+        # igra dealer
         while True:
             if sum(dealer.hand[1]) < 17:
                 sleep(0.7)
-                dealer.deal()
+                dealer.deal(True)
             elif 17 <= sum(dealer.hand[1]) <= 21:
                 if sum(dealer.hand[1]) < sum(player.hand[1]):
                     sleep(0.7)
@@ -81,8 +104,7 @@ else:
                     sleep(0.7)
                     print(f"\nThe dealer has {sum(dealer.hand[1])}. Player is pushed!")
                     break
-
-            if sum(dealer.hand[1]) > 21:
+            elif sum(dealer.hand[1]) > 21:
                 sleep(0.7)
                 print("\nThe dealer has bust. You win!")
                 break
@@ -91,4 +113,3 @@ else:
     else:
         sleep(0.7)
         print("\nBetter luck next time!")
-
